@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LocationController;
 use Illuminate\Http\Request;
@@ -40,3 +41,18 @@ Route::middleware('auth:sanctum')->put('/courses/{id}/accept', [CourseController
 Route::middleware('auth:sanctum')->put('/courses/{id}/refuse', [CourseController::class, 'refuse']); // Refuser une course (conducteur)
 Route::middleware('auth:sanctum')->put('/courses/{id}/start', [CourseController::class, 'start']); // Démarrer une course (conducteur)
 Route::middleware('auth:sanctum')->put('/courses/{id}/finish', [CourseController::class, 'finish']); // Terminer une course (conducteur)
+
+
+// Route historique des courses
+Route::middleware('auth:sanctum')->get('/courses/history', [CourseController::class, 'history']);
+
+Route::middleware('auth:sanctum')->put('/courses/{id}/location', [CourseController::class, 'updateLocation']);
+//Incidents
+Route::middleware('auth:sanctum')->put('/courses/{id}/incident', [CourseController::class, 'addIncident']);
+//Historique
+Route::middleware('auth:sanctum')->get('/admin/courses', [AdminController::class, 'viewHistory']);
+
+
+//Review
+// Route pour laisser un avis (note et commentaire) sur un conducteur
+Route::middleware('auth:sanctum')->post('/courses/{id}/review', [CourseController::class, 'addReview']);

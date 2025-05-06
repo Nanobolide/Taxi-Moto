@@ -68,4 +68,15 @@ class User extends Authenticatable
         return $this->role === 'admin';
     }
 
+      // Relation avec les critiques en tant que passager
+      public function reviewsAsPassager()
+      {
+          return $this->hasMany(Review::class, 'passager_id');
+      }
+  
+      // Relation avec les critiques en tant que conducteur
+      public function reviewsAsConducteur()
+      {
+          return $this->hasMany(Review::class, 'conducteur_id');
+      }
     }

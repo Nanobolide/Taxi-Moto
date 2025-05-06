@@ -13,11 +13,18 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('passager_id')->constrained('users'); // L'ID du passager
-            $table->foreignId('conducteur_id')->nullable()->constrained('users'); // L'ID du conducteur
-            $table->string('depart'); // Adresse du départ
-            $table->string('destination'); // Adresse de destination
-            $table->enum('statut', ['en attente', 'acceptée', 'en cours', 'terminée'])->default('en attente'); // Statut de la course
+            $table->foreignId('passager_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('conducteur_id')->constrained('users')->onDelete('cascade');
+            $table->string('depart');
+            $table->string('destination');
+            $table->string('statut')->default('en attente'); // Statut de la course
+            $table->text('incidents')->nullable(); // Champ pour enregistrer des incidents
+            $table->decimal('latitude_depart', 10, 8)->nullable(); // Latitude du départ
+            $table->decimal('longitude_depart', 11, 8)->nullable(); // Longitude du départ
+            $table->decimal('latitude_arrivee', 10, 8)->nullable(); // Latitude d'arrivée
+            $table->decimal('longitude_arrivee', 11, 8)->nullable(); // Longitude d'arrivée
+            $table->timestamp('depart_time')->nullable(); // Heure du départ
+            $table->timestamp('arrivee_time')->nullable(); // Heure de l'arrivée
             $table->timestamps();
         });
     }
