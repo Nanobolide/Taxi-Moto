@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -39,26 +40,28 @@ class AuthController extends Controller
     // 🔐 Connexion
     public function login(Request $request)
     {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
         $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
 
-        $user = User::where('email', $request->email)->first();
+       // Tentative de connexion avec les identifiants
+    if (!Auth::attempt($credentials)) {
+        return response()->json(['message' => 'Identifiants invalides'], 401);
+    }
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['Les identifiants sont invalides.'],
-            ]);
-        }
+    // Récupérer l'utilisateur
+    $user = User::where('email', $request->email)->first();
 
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'message' => 'Connexion réussie',
-            'user' => $user,
-            'token' => $token,
-        ]);
+    // Générer le token
+    return response()->json([
+        'token' => $user->createToken('mobile')->plainTextToken,
+        'user' => $user,
+    ]);
     }
 
     // 🔐 Déconnexion
