@@ -30,6 +30,8 @@ class UserFactory extends Factory
             'password' => bcrypt('password'), // ou Hash::make('password')
             'remember_token' => Str::random(10),
             'role' => fake()->randomElement(['passager', 'conducteur']),
+            'latitude' => fake()->randomFloat(8, 4.35, 4.40),     // autour de Bangui
+            'longitude' => fake()->randomFloat(8, 18.55, 18.60),  // autour de Bangui
         ];
     }
 
