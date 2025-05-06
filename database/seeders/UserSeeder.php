@@ -16,10 +16,10 @@ class UserSeeder extends Seeder
         User::factory()->count(10)->create(); // 10 utilisateurs aléatoires
 
         // Tu peux aussi forcer un rôle précis :
-        User::factory()->create([
-            'email' => 'admin@example.com',
-            'role' => 'admin',
-            'password' => bcrypt('password'), // mot de passe connu pour test
-        ]);
+        // User::factory()->create([
+        //     'email' => 'admin@example.com',
+        //     'role' => 'admin',
+        //     'password' => bcrypt('password'), // mot de passe connu pour test
+        // ]);
     }
 }
